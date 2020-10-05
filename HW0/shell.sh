@@ -6,7 +6,6 @@ function save_object_to_csv() {
 }
 function save_array_to_csv() {
     echo "$(jq -r '@csv'<<<"$1")" > "$2"
-#      echo "$(jq -r 'map([.] | join(", ")) | join("\n")'<<<"$1")" > "$2"
 }
 
 # 1
@@ -16,7 +15,8 @@ save_array_to_csv "$lnames" "snapshot-1.log"
 
 # 2
 length=$(jq -r 'length' <<<"$JSON_FILE")
-save_array_to_csv "[$length]" "snapshot-2.log"
+echo "\"length\"" > "snapshot-2.log"
+echo "$length" >> "snapshot-2.log"
 
 # 3
 info=$(jq -r '.[] | select(.Lname == "Moradi" and .Fname=="Sepide")' <<<"$JSON_FILE")
