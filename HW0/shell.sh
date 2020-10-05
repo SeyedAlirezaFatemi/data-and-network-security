@@ -1,3 +1,4 @@
+# jq
 function save_array_object_to_csv() {
     echo "$(jq -r '(.[0] | keys_unsorted), (.[] | to_entries | map(.value))|@csv'<<<"$1")" > "$2"
 }
@@ -10,6 +11,7 @@ function save_array_to_csv() {
 
 # 1
 JSON_FILE=$(curl -s "http://mahdiy.ir/dns/hw0/data.json")
+save_array_object_to_csv "$JSON_FILE" "student.log"
 lnames=$(jq -r 'map(.Lname) | sort' <<<"$JSON_FILE")
 save_array_to_csv "$lnames" "snapshot-1.log"
 

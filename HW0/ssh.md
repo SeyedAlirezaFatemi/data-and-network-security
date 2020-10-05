@@ -52,16 +52,14 @@ Resources:
 + https://linuxconfig.org/how-to-change-welcome-message-motd-on-ubuntu-18-04-server
 + https://www.tecmint.com/protect-ssh-logins-with-ssh-motd-banner-messages/
 
-To change the message after login:
-Change the content of "/etc/motd" and the files in "/etc/update-motd.d/".
+To change the message after login change the content of "/etc/motd" and the files in "/etc/update-motd.d/".
 
-To change the message before login:
-Change the content of "/etc/issue.net".
+To change the message before login change the content of "/etc/issue.net".
 ```
 # For message befor login
 Banner /etc/issue.net
 # Optional
-# Disabe after login banners
+# Disable after login banners
 chmod -x /etc/update-motd.d/*
 PrintLastLog no
 ```
@@ -74,4 +72,5 @@ google-authenticator
 ```
 ```
 ChallengeResponseAuthentication yes
+UsePAM yes
 ```
