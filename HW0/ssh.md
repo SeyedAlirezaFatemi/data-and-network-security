@@ -1,3 +1,4 @@
+Commands for host:
 ```shell script
 sudo docker run -p 52022:22 -i --name ssh-test -d ubuntu
 # Get IP address
@@ -6,10 +7,11 @@ docker inspect -f "{{ .NetworkSettings.IPAddress }}" ssh-test
 docker exec -it ssh-test /bin/bash
 sudo ufw enable
 sudo ufw allow from any to any port 52022 proto tcp
-sudo ufw delete allow from any to any port 52022 proto tcp
 sudo ufw status verbose
 hostname -I
+sudo ufw delete allow from any to any port 52022 proto tcp
 ```
+Prepare the container:
 ```shell script
 apt update
 apt install ssh

@@ -1,12 +1,12 @@
 # jq
 function save_array_object_to_csv() {
-    echo "$(jq -r '(.[0] | keys_unsorted), (.[] | to_entries | map(.value))|@csv'<<<"$1")" > "$2"
+  jq -r '(.[0] | keys_unsorted), (.[] | to_entries | map(.value))|@csv' <<<"$1" >"$2"
 }
 function save_object_to_csv() {
-    echo "$(jq -r '(. | keys_unsorted), (. | to_entries | map(.value))|@csv'<<<"$1")" > "$2"
+  jq -r '(. | keys_unsorted), (. | to_entries | map(.value))|@csv' <<<"$1" >"$2"
 }
 function save_array_to_csv() {
-    echo "$(jq -r '@csv'<<<"$1")" > "$2"
+  jq -r '@csv' <<<"$1" >"$2"
 }
 
 # 1
@@ -17,8 +17,8 @@ save_array_to_csv "$lnames" "snapshot-1.log"
 
 # 2
 length=$(jq -r 'length' <<<"$JSON_FILE")
-echo "\"length\"" > "snapshot-2.log"
-echo "$length" >> "snapshot-2.log"
+echo "\"length\"" >"snapshot-2.log"
+echo "$length" >>"snapshot-2.log"
 
 # 3
 info=$(jq -r '.[] | select(.Lname == "Moradi" and .Fname=="Sepide")' <<<"$JSON_FILE")
@@ -50,22 +50,26 @@ students=$(jq -r 'map(. | .mean=(.OS + .Net + .Algo + .NSec + .Sof)/5)' <<<"$stu
 save_array_object_to_csv "$students" "snapshot-7.log"
 
 # 8
-echo "\"OS\",\"Net\",\"Algo\",\"NSec\",\"Sof\"">"snapshot-8.log"
+echo "\"OS\",\"Net\",\"Algo\",\"NSec\",\"Sof\"" >"snapshot-8.log"
 declare -a avgs
-for course in OS Net Algo NSec Sof
-do
+for course in OS Net Algo NSec Sof; do
   avgs+=("$(jq --arg course "$course" -r "map(.$course) | add / length" <<<"$JSON_FILE")")
 done
-echo "$(IFS=, ; echo "${avgs[*]}")">>"snapshot-8.log"
+echo "$(
+  IFS=,
+  echo "${avgs[*]}"
+)" >>"snapshot-8.log"
 
 # 9
 save_array_object_to_csv "$(jq -r '. += [{"Lname": "Fatemi Jahromi", "Fname": "Seyed Alireza", "OS": 20, "Net": 20, "Algo": 20, "Nsec": 20, "Sof": 20}]' <<<"$JSON_FILE")" "snapshot-9.log"
 
 # 10
-echo "\"Freq\",\"Grade\"">"snapshot-10.log"
+echo "\"Freq\",\"Grade\"" >"snapshot-10.log"
 soft_grades=$(jq -r ".[].Sof" <<<"$JSON_FILE")
-grades="$((IFS=$'\n';sort <<< "${soft_grades[*]}") | uniq)"
-for grade in $grades
-do
-  echo "$(jq --arg grade "$grade" -r "map(select(.Sof == $grade)) | length" <<< "$JSON_FILE"), $grade" >>"snapshot-10.log"
+grades="$(
+  IFS=$'\n'
+  sort <<<"${soft_grades[*]}" | uniq
+)"
+for grade in $grades; do
+  echo "$(jq --arg grade "$grade" -r "map(select(.Sof == $grade)) | length" <<<"$JSON_FILE"), $grade" >>"snapshot-10.log"
 done
