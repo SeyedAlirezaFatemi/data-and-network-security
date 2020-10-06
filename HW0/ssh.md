@@ -49,7 +49,7 @@ Port 2062
 ```
 AllowUsers dnsl
 ```
-##6
+## 6
 Resources:
 + https://linuxconfig.org/how-to-change-welcome-message-motd-on-ubuntu-18-04-server
 + https://www.tecmint.com/protect-ssh-logins-with-ssh-motd-banner-messages/
@@ -65,7 +65,7 @@ Banner /etc/issue.net
 chmod -x /etc/update-motd.d/*
 PrintLastLog no
 ```
-##7
+## 7
 Resources:
 + https://hackertarget.com/ssh-two-factor-google-authenticator/
 ```shell script
